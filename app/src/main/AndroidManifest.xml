@@ -18,7 +18,10 @@
         <activity
             android:name=".MountainDetailsActivity"
             android:label="@string/details_activity"
-            android:parentActivityName="com.example.brom.activitiesapp.MainActivity">
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.brom.activitiesapp.MainActivity"/>
         </activity>
     </application>
 

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/colorBlackText"
         android:fontFamily="sans-serif-condensed"
         android:textSize="16sp"/>
 

@@ -12,15 +12,20 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.value;
-import static android.os.Build.VERSION_CODES.O;
-
 public class MainActivity extends AppCompatActivity {
     private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
     private String[] mountainLocations = {"Alps","Alps","Alaska"};
-    private int[] mountainHeights ={4478,4808,6190};
+    private int[] mountainHeights = {4478,4808,6190};
+    private int[] mountainImages = {R.drawable.matterhorn, R.drawable.mont_blanc, R.drawable.denali};
+    private String[] mountainLicenses = {"CC0", "Public Domain", "CC BY 2.0"};
 
     private static final String TAG = "MainActivity";
+    public static final String
+            MOUNTAIN_NAME = "MOUNTAIN_NAME",
+            MOUNTAIN_LOCATION = "MOUNTAIN_LOCATION",
+            MOUNTAIN_HEIGHT = "MOUNTAIN_HEIGHT",
+            MOUNTAIN_IMAGE = "MOUNTAIN_IMAGE",
+            MOUNTAIN_LICENSE = "MOUNTAIN_LICENSE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +33,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate() called");
 
+        //List that will be populated with Mountain-objects
         final List<Mountain> mountains = new ArrayList<>();
+
+        //List that will be popultaed with only names of Mountains
         List<String> names = new ArrayList<>();
 
         for(int i = 0; i < mountainNames.length; i++) {
-            mountains.add(new Mountain(mountainNames[i], mountainHeights[i], mountainLocations[i]));
+            //Creating Mountain object with info from the the first position in each of the 5 arrays and adds to list
+            mountains.add(new Mountain(
+                    mountainNames[i],
+                    mountainHeights[i],
+                    mountainLocations[i],
+                    mountainImages[i],
+                    mountainLicenses[i]))
+            ;
+            //Adds only mountain name to another list, use to populate ListView
             names.add(mountains.get(i).getName());
         }
 
@@ -43,34 +59,16 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Creates intent and passes info to it by key to be able to use it in other activity
                 Intent intent = new Intent(MainActivity.this, MountainDetailsActivity.class);
-
+                intent.putExtra(MOUNTAIN_NAME, mountains.get(i).getName());
+                intent.putExtra(MOUNTAIN_LOCATION, mountains.get(i).getLocation());
+                intent.putExtra(MOUNTAIN_HEIGHT, mountains.get(i).getHeight());
+                intent.putExtra(MOUNTAIN_IMAGE, mountains.get(i).getImage());
+                intent.putExtra(MOUNTAIN_LICENSE, mountains.get(i).getLicense());
                 startActivity(intent);
             }
         });
-
-
-
-
-        // 1. Create a ListView as in previous assignment
-        // 2. Create a new activity named "MountainDetailsActivity
-        // 3. Create a new Layout file for the MountainDetailsActivity called
-        //    "activity_mountaindetails". MountainDetailsActivity must have MainActivity as its
-        //    ´parent activity.
-        // 4. The layout file created in step 3 must have a LinearLayout
-        // 5. The layout file created in step 3 must be able to display
-        //    * Mountain Name
-        //    * Mountain Location
-        //    * Mountain Height
-        // 6. When tapping on a list item: create an Intent that includes
-        //    * Mountain Name
-        //    * Mountain Location
-        //    * Mountain Height
-        // 7. Display the MountainDetailsActivity with the data from the Intent created in step
-        //    6
-        // 8. From the MountainDetailsActivity you should have an option to "go back" using an
-        //    left arro button. This is done by letting the MainActivity be the parent activity to
-        //    MountainDetailsActivity.
     }
 
     @Override
